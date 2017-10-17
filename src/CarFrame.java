@@ -138,8 +138,8 @@ public class CarFrame {
     }
 
     private void drawTest() {
-        MoveableShape shape = new CarShape(0, 0, 100);
-        ShapeIcon icon = new ShapeIcon(shape, 600, 600);
+        MoveableShape shape = new PersonShape(100, 100, 100);
+        ShapeIcon icon = new ShapeIcon(shape, MOVE_AREA_WIDTH, MOVE_AREA_HEIGHT);
         JLabel label = new JLabel(icon);
         movingArea.add(label);
         final int DELAY = 10;
@@ -149,7 +149,7 @@ public class CarFrame {
             {
                 public void actionPerformed(ActionEvent event)
                 {
-                    shape.translate(1, 0, MOVE_AREA_WIDTH, MOVE_AREA_HEIGHT);
+                    shape.translate(0, 0, MOVE_AREA_WIDTH, MOVE_AREA_HEIGHT);
                     label.repaint();
                 }
             });
