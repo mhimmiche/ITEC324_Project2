@@ -53,7 +53,7 @@ public class CarShape implements MoveableShape
         g2.setPaint(Color.BLACK);
         g2.fill(frontTire);
         g2.fill(rearTire);
-        
+
         g2.draw(body);
         g2.draw(frontTire);
         g2.draw(rearTire);

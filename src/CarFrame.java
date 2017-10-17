@@ -1,9 +1,9 @@
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.awt.event.*;
+import java.util.*;
+
 
 /**
  * Vendor frame to create the GUI of the vending machine.
@@ -32,11 +32,17 @@ public class CarFrame {
 
     private boolean movingFrameOn;
 
+    private Stack<JLabel> currentShapes;
+
+    private Random rand;
+
 
 
     public CarFrame() {
         movementPanel();
         movingFrameOn = true;
+        currentShapes = new Stack<>();
+        rand = new Random();
     }
 
     /**
@@ -154,6 +160,36 @@ public class CarFrame {
                 }
             });
         t.start();
+    }
+
+    private void addObject() {
+        for (JCheckBox cb : checkBoxGr) {
+            if (cb.isSelected()) {
+                int x = rand.nextInt(MOVE_AREA_WIDTH);
+                int y = rand.nextInt(MOVE_AREA_HEIGHT);
+                int size = rand.nextInt(100) + 75;
+                MoveableShape shape;
+                ShapeIcon icon;
+                JLabel label;
+                switch (cb.getText()) {
+                    case "BLUE":
+                        shape = new PersonShape(x, y, size);
+                        icon = new ShapeIcon(shape, MOVE_AREA_WIDTH, MOVE_AREA_HEIGHT);
+                        label = new JLabel(icon);
+                        currentShapes.push(label);
+                        break;
+                    case "RED":
+                        shape = new CarShape(x, y, size);
+                        icon = new ShapeIcon(shape, MOVE_AREA_WIDTH, MOVE_AREA_HEIGHT);
+                        label = new JLabel(icon);
+                        currentShapes.push(label);
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }
     }
 
 
