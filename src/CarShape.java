@@ -20,8 +20,12 @@ public class CarShape implements MoveableShape
         this.width = width;
     }
 
-    public void translate(int dx, int dy)
+    public void translate(int dx, int dy, int aWidth, int aHeight)
     {
+        if (x < 0) x = aWidth;
+        else if (x > aWidth) x = 0;
+        if (y < 0) y = aHeight;
+        else if (y > aHeight) y = 0;
         x += dx;
         y += dy;
     }

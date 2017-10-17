@@ -12,7 +12,8 @@ import java.util.HashMap;
  */
 public class CarFrame {
 
-    private static final int MOVE_AREA_SIZE = 600;
+    private static final int MOVE_AREA_WIDTH = 600;
+    private static final int MOVE_AREA_HEIGHT = 600;
 
     private ArrayList<JCheckBox> checkBoxGr;
     private JCheckBox redCheckBox;
@@ -110,7 +111,7 @@ public class CarFrame {
         movingFrame.setLayout(new BorderLayout());
         movingFrame.getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         movingArea = new JPanel();
-        movingArea.setPreferredSize(new Dimension(MOVE_AREA_SIZE, MOVE_AREA_SIZE));
+        movingArea.setPreferredSize(new Dimension(MOVE_AREA_WIDTH, MOVE_AREA_HEIGHT));
         movingFrame.add(movingArea, BorderLayout.CENTER);
         JPanel buttonArea = new JPanel();
         subFrameExitButton = new JButton("Exit");
@@ -132,7 +133,7 @@ public class CarFrame {
         buttonArea.add(subFrameHideButton);
         buttonArea.add(subFrameExitButton);
         movingFrame.add(buttonArea, BorderLayout.SOUTH);
-        movingFrame.setSize(new Dimension(MOVE_AREA_SIZE + 20, MOVE_AREA_SIZE + 100));
+        movingFrame.setSize(new Dimension(MOVE_AREA_WIDTH + 20, MOVE_AREA_HEIGHT + 100));
         drawTest();
     }
 
@@ -148,7 +149,7 @@ public class CarFrame {
             {
                 public void actionPerformed(ActionEvent event)
                 {
-                    shape.translate(1, 1);
+                    shape.translate(1, 0, MOVE_AREA_WIDTH, MOVE_AREA_HEIGHT);
                     label.repaint();
                 }
             });
