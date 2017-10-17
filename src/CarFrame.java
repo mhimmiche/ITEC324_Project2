@@ -11,13 +11,16 @@ import java.util.HashMap;
  * @author Mehdi Himmiche
  */
 public class CarFrame {
+
+    private static final int MOVE_AREA_SIZE = 600;
+
     private ArrayList<JCheckBox> checkBoxGr;
     private JCheckBox redCheckBox;
     private JCheckBox blueCheckBox;
     private JCheckBox yellowCheckBox;
 
+    private JFrame movingFrame;
     private JPanel movingArea;
-    private JPanel moveable;
 
     private JButton addButton;
     private JButton showButton;
@@ -26,11 +29,14 @@ public class CarFrame {
     private JButton subFrameHideButton;
     private JButton subFrameExitButton;
 
-    private Timer timer;
+    private boolean movingFrameOn;
 
 
 
-
+    public CarFrame() {
+        movementPanel();
+        movingFrameOn = true;
+    }
 
     /**
      * Create the initial frame of the vending machine
@@ -43,16 +49,9 @@ public class CarFrame {
         JPanel userInt = interfaceButtons();
         userInt.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         carFrame.getContentPane().add(userInt, BorderLayout.NORTH);
-        int xSize = carFrame.getContentPane().getWidth();
-        JPanel moveable = movementPanel(xSize);
-        carFrame.getContentPane().add(moveable, BorderLayout.CENTER);
-
         carFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //carFrame.pack();
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        int screenHeight = (int) (toolkit.getScreenSize().getHeight() * .75);
-        carFrame.setSize(new Dimension(screenHeight, screenHeight));
-        carFrame.setLocationRelativeTo(null);
+        carFrame.pack();
+        System.out.println(carFrame.getSize().getHeight());
         carFrame.setVisible(true);
         return carFrame;
     }
@@ -65,7 +64,11 @@ public class CarFrame {
         showButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                moveable.setVisible(true);
+                if (!movingFrameOn) {
+                    movementPanel();
+                    movingFrameOn = true;
+                }
+                movingFrame.setVisible(true);
             }
         });
         userInter.add(showButton);
@@ -101,40 +104,41 @@ public class CarFrame {
         return checkBoxes;
     }
 
-    private JPanel movementPanel(int xSize) {
-        moveable = new JPanel();
-        moveable.setLayout(new BorderLayout());
-        moveable.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+    private void movementPanel() {
+        movingFrame = new JFrame();
+        movingFrame.setVisible(false);
+        movingFrame.setLayout(new BorderLayout());
+        movingFrame.getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         movingArea = new JPanel();
-        moveable.add(movingArea, BorderLayout.CENTER);
+        movingArea.setPreferredSize(new Dimension(MOVE_AREA_SIZE, MOVE_AREA_SIZE));
+        movingFrame.add(movingArea, BorderLayout.CENTER);
         JPanel buttonArea = new JPanel();
         subFrameExitButton = new JButton("Exit");
         subFrameExitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                movingFrameOn = false;
+                movingFrame.dispose();
             }
         });
         subFrameHideButton = new JButton("Hide");
         subFrameHideButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                moveable.setVisible(false);
+                movingFrame.setVisible(false);
             }
         });
         buttonArea.setLayout(new GridLayout(0,2,10,10));
         buttonArea.add(subFrameHideButton);
         buttonArea.add(subFrameExitButton);
-        moveable.add(buttonArea, BorderLayout.SOUTH);
+        movingFrame.add(buttonArea, BorderLayout.SOUTH);
+        movingFrame.setSize(new Dimension(MOVE_AREA_SIZE + 20, MOVE_AREA_SIZE + 100));
         drawTest();
-        int ySize = (int) (xSize * .6);
-        moveable.setPreferredSize(new Dimension(xSize, ySize));
-        return moveable;
     }
 
     private void drawTest() {
-        MoveableShape shape = new CarShape(50, 50, 10);
-        ShapeIcon icon = new ShapeIcon(shape, 10, 5);
+        MoveableShape shape = new CarShape(0, 0, 100);
+        ShapeIcon icon = new ShapeIcon(shape, 600, 600);
         JLabel label = new JLabel(icon);
         movingArea.add(label);
         final int DELAY = 10;
@@ -144,7 +148,7 @@ public class CarFrame {
             {
                 public void actionPerformed(ActionEvent event)
                 {
-                    shape.translate(1, 0);
+                    shape.translate(1, 1);
                     label.repaint();
                 }
             });
