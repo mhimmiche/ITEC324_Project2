@@ -3,7 +3,7 @@ import java.awt.geom.*;
 import java.util.*;
 
 /**
- A car that can be moved around.
+ A person that can be moved around.
  */
 public class PersonShape implements MoveableShape
 {
